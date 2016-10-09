@@ -1,0 +1,19 @@
+{
+  "name": "tweeo",
+  "version": "1.0.0",
+  "description": "tweeo",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MumuDesBois/Tweeo.git"
+  },
+  "author": "Thomas Lemeur & Adrien Mulattieri",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MumuDesBois/Tweeo/issues"
+  },
+  "homepage": "https://github.com/MumuDesBois/Tweeo#readme"
+}
