@@ -1,19 +1,25 @@
 {
-  "name": "tweeo",
+  "name": "electron-quick-start",
   "version": "1.0.0",
-  "description": "tweeo",
-  "main": "index.js",
+  "description": "A minimal Electron application",
+  "main": "main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "electron ."
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/MumuDesBois/Tweeo.git"
+  "repository": "https://github.com/electron/electron-quick-start",
+  "keywords": [
+    "Electron",
+    "quick",
+    "start",
+    "tutorial",
+    "demo"
+  ],
+  "author": "GitHub",
+  "license": "CC0-1.0",
+  "devDependencies": {
+    "electron": "^1.4.1"
   },
-  "author": "Thomas Lemeur & Adrien Mulattieri",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/MumuDesBois/Tweeo/issues"
-  },
-  "homepage": "https://github.com/MumuDesBois/Tweeo#readme"
+  "dependencies": {
+    "electron-oauth-twitter": "^1.0.1"
+  }
 }
