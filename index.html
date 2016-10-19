@@ -1,15 +1,29 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta charset="utf-8">
-        <title></title>
+        <meta charset="UTF-8">
+        <title>Hello World!</title>
+        <link rel="stylesheet" href="stylesheets/style.css">
     </head>
+
     <body>
-        <script type="text/javascript" src="index.js">
-
-        </script>
-        <a href="#">Se connecter</a>
-        <button type="button" name="tweet">push</button>
-
+        <button id="log-with-twitter">connexion</button>
+        <div id="map-container"></div>
     </body>
+
+    <!--
+        Load JS Scripts
+    -->
+    <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+
+    <!-- jquery -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <!-- map -->
+    <script src="scripts/map.js"></script>
+    <!-- google maps -->
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBFO6THo29ll-W20yu1KmK--gpddIYJxFs&callback=initMap"></script>
+    <!-- app -->
+    <script src="scripts/app.js"></script>
+
+    <script>if (window.module) module = window.module;</script>
 </html>
