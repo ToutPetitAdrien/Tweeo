@@ -1,26 +1,9 @@
 /* jshint esversion:6*/
 const electron = require('electron');
-const OauthTwitter = require('electron-oauth-twitter');
 // Module to control application life.
 const app = electron.app;
 // Module to create native browser window.
 const BrowserWindow = electron.BrowserWindow;
-
-function logWithTwitter(){
-    const twitter = new OauthTwitter({
-      key: 'efpqDyEfcjudWbUYpN5DItq2q',
-      secret: 'm8pnXcbKwnnLNoaaV0SIel2anRPXO4pFWIpbKod7WTz6WhQe0C',
-    });
-
-    twitter.startRequest().then((result) => {
-        const accessToken = result.oauth_access_token;
-        const accessTokenSecret = result.oauth_access_token_secret;
-        dialog.showErrorBox('Status', `Token: ${accessToken} \nSecret: ${accessTokenSecret}`);
-    }).catch((error) => {
-        console.error(error, error.stack);
-    });
-}
-exports.logWithTwitter = logWithTwitter;
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -68,5 +51,23 @@ app.on('activate', function () {
   }
 });
 
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and require them here.
+/*
+    TWITTER SETUP
+*/
+
+// package for twitter oauth
+const OauthTwitter = require('electron-oauth-twitter');
+// Put twitter app key and secret as environment variable
+process.env.TWITTER_CONSUMER_KEY = 'efpqDyEfcjudWbUYpN5DItq2q';
+process.env.TWITTER_CONSUMER_SECRET = 'm8pnXcbKwnnLNoaaV0SIel2anRPXO4pFWIpbKod7WTz6WhQe0C';
+
+// Function to return Twitter login windows
+function logWithTwitter(){
+    const twitter = new OauthTwitter({
+      key: process.env.TWITTER_CONSUMER_KEY,
+      secret: process.env.TWITTER_CONSUMER_SECRET,
+    });
+    return twitter.startRequest();
+}
+// Export this function to be called in app script 
+exports.logWithTwitter = logWithTwitter;

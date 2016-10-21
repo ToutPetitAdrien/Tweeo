@@ -8,6 +8,12 @@
 
     <body>
         <button id="log-with-twitter">connexion</button>
+        <header>
+            <div class="username"></div>
+            <div class="profile-picture">
+                <img src="" alt="">
+            </div>
+        </header>
         <div id="map-container"></div>
     </body>
 
@@ -16,14 +22,14 @@
     -->
     <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
 
-    <!-- jquery -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <!-- map -->
-    <script src="scripts/map.js"></script>
     <!-- google maps -->
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBFO6THo29ll-W20yu1KmK--gpddIYJxFs&callback=initMap"></script>
+    <!-- map -->
+    <script src="scripts/map.js"></script>
     <!-- app -->
     <script src="scripts/app.js"></script>
+    <!-- jquery -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 
     <script>if (window.module) module = window.module;</script>
 </html>

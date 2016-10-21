@@ -1,77 +1,8 @@
 var map,
-    style = [{"featureType":"all","elementType":"all","stylers":[{"visibility":"off"}]},{"featureType":"landscape","elementType":"all","stylers":[{"visibility":"on"},{"color":"#ffffff"}]},{"featureType":"road.highway","elementType":"all","stylers":[{"color":"#dfdbdb"},{"visibility":"simplified"}]},{"featureType":"road.highway","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"road.arterial","elementType":"all","stylers":[{"visibility":"simplified"},{"color":"#eff0f2"}]},{"featureType":"road.arterial","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"road.local","elementType":"all","stylers":[{"color":"#eff0f2"},{"visibility":"on"}]},{"featureType":"road.local","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"water","elementType":"all","stylers":[{"color":"#eff0f2"},{"visibility":"on"}]}],
-    datas = [
-        {
-            name : "Thomas",
-            lat : 22.502407,
-            lng : 19.160156,
-            tweets : [
-                "Super soirée !",
-                "Bon app à tout le monde.",
-                "You're so good !"
-            ]
-        },
-        {
-            name : "Paul",
-            lat : 35.951330,
-            lng : -91.933594,
-            tweets : [
-                "Super soirée !",
-                "Bon app à tout le monde.",
-                "You're so good !"
-            ]
-        },
-        {
-            name : "Ksos",
-            lat : 49.088258,
-            lng : 12.480469,
-            tweets : [
-                "Super soirée !",
-                "Bon app à tout le monde.",
-                "You're so good !"
-            ]
-        },
-        {
-            name : "Wang",
-            lat : 30.059586,
-            lng : 116.191406,
-            tweets : [
-                "Super soirée !",
-                "Bon app à tout le monde.",
-                "You're so good !"
-            ]
-        },
-        {
-            name : "Fred",
-            lat : 46.490829,
-            lng : 0.878906,
-            tweets : [
-                "Super soirée !",
-                "Bon app à tout le monde.",
-                "You're so good !"
-            ]
-        },
-        {
-            name : "Pablo",
-            lat : -19.404430,
-            lng : -44.121094,
-            tweets : [
-                "Super soirée !",
-                "Bon app à tout le monde.",
-                "You're so good !"
-            ]
-        },
-        {
-            name : "Byran",
-            lat : 35.951330,
-            lng : -116.894531,
-            tweets : [
-                "Super soirée !",
-                "Bon app à tout le monde.",
-                "You're so good !"
-            ]
-        }
-    ];
+    style = [{"featureType":"all","elementType":"all","stylers":[{"visibility":"off"}]},{"featureType":"landscape","elementType":"all","stylers":[{"visibility":"on"},{"color":"#ffffff"}]},{"featureType":"road.highway","elementType":"all","stylers":[{"color":"#dfdbdb"},{"visibility":"simplified"}]},{"featureType":"road.highway","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"road.arterial","elementType":"all","stylers":[{"visibility":"simplified"},{"color":"#eff0f2"}]},{"featureType":"road.arterial","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"road.local","elementType":"all","stylers":[{"color":"#eff0f2"},{"visibility":"on"}]},{"featureType":"road.local","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"water","elementType":"all","stylers":[{"color":"#eff0f2"},{"visibility":"on"}]}];
+
+var datas = [{name : "thomas", lat : 12.6598, lng :14.655, tweets : ["hey","yo","damn"]}];
+var panelElement = null;
 
 function initMap() {
     map = new google.maps.Map(document.getElementById('map-container'), {
@@ -80,12 +11,24 @@ function initMap() {
         styles : style,
         disableDefaultUI: true
     });
+    readFile('scripts/panel.html');
+    displayDatas(datas);
+}
+
+function displayDatas(datas){
     for(i in datas){
-        var marker = createMarker(datas[i]);
-        marker.setMap(map);
+        addElement(datas[i]);
     }
 }
 
+function addElement(infos){
+    var marker = createMarker(infos);
+    var info = createInfoWindow(infos);
+    marker.setMap(map);
+    marker.addListener('click', function() {
+        info.open(map, marker);
+    });
+}
 function createMarker(infos){
     var latlng = new google.maps.LatLng(infos.lat,infos.lng);
     var icon = 'img/marker'+ (Math.floor(Math.random() * 3) + 1 )+'.png';
@@ -94,21 +37,28 @@ function createMarker(infos){
         title: infos.name,
         icon : icon
     });
-    var info = createInfoWindow(infos.name, infos.tweets);
-    marker.addListener('click', function() {
-        info.open(map, marker);
-    });
     return marker;
 }
-
-function createInfoWindow(name, tweets){
+function createInfoWindow(infos){
     var element = '<div id="content">'+
-        '<h1>'+ name +'</h1>'+
-        '<ul>'+
-            '<li>' + tweets[0] + '</li>'+
-            '<li>' + tweets[1] + '</li>'+
-            '<li>' + tweets[2] + '</li>'+
-        '</ul>'+
+    '<h1>'+ infos.name +'</h1>'+
+    '<ul>'+
+    '<li>' + infos.tweets[0] + '</li>'+
+    '<li>' + infos.tweets[1] + '</li>'+
+    '<li>' + infos.tweets[2] + '</li>'+
+    '</ul>'+
     '</div>';
     return new google.maps.InfoWindow({content: element});
+}
+
+function readFile(file){
+    var rawFile = new XMLHttpRequest(),
+    response = false;
+    rawFile.open("GET", file, true);
+    rawFile.onreadystatechange = function(){
+        if(rawFile.readyState == 4){
+            panelElement = rawFile.responseText;
+        }
+    };
+    rawFile.send(null);
 }

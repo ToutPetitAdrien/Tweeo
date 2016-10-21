@@ -20,6 +20,7 @@
     "electron": "^1.4.1"
   },
   "dependencies": {
-    "electron-oauth-twitter": "^1.0.1"
+    "electron-oauth-twitter": "^1.0.1",
+    "twitter": "^1.4.0"
   }
 }
