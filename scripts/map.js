@@ -12,7 +12,7 @@ function initMap() {
         disableDefaultUI: true
     });
     readFile('scripts/panel.html');
-    displayDatas(datas);
+    // displayDatas(datas);
 }
 
 function displayDatas(datas){
@@ -40,15 +40,17 @@ function createMarker(infos){
     return marker;
 }
 function createInfoWindow(infos){
-    var element = '<div id="content">'+
-    '<h1>'+ infos.name +'</h1>'+
-    '<ul>'+
-    '<li>' + infos.tweets[0] + '</li>'+
-    '<li>' + infos.tweets[1] + '</li>'+
-    '<li>' + infos.tweets[2] + '</li>'+
-    '</ul>'+
-    '</div>';
-    return new google.maps.InfoWindow({content: element});
+    var templateVars = {
+        name: infos.name,
+        tweet1: infos.tweets[0],
+        tweet2: infos.tweets[1],
+        tweet3: infos.tweets[2],
+    };
+    var content = panelElement.replace(/name|tweet1|tweet2|tweet3/gi, function(matched){
+        return templateVars[matched];
+    }).split('{{').join('').split('}}').join('');
+
+    return new google.maps.InfoWindow({content: content});
 }
 
 function readFile(file){
