@@ -11,13 +11,12 @@ function initMap() {
         styles : style,
         disableDefaultUI: true
     });
-    readFile('scripts/panel.html');
-    // displayDatas(datas);
+    readFile('template/panel.html');
 }
 
-function displayDatas(datas){
-    for(i in datas){
-        addElement(datas[i]);
+function hideMarker(markerTab){
+    for(var i = 0; i < markerTab.length; i++){
+        markerTab[i].setMap(null);
     }
 }
 
@@ -29,16 +28,26 @@ function addElement(infos){
         info.open(map, marker);
     });
 }
+
 function createMarker(infos){
-    var latlng = new google.maps.LatLng(infos.lat,infos.lng);
-    var icon = 'img/marker'+ (Math.floor(Math.random() * 3) + 1 )+'.png';
-    var marker = new google.maps.Marker({
-        position: latlng,
+    var colors = ['#e5118e', '#39dad0', '#f4bb4c', '#7164f0'];
+    var randomColor = colors[Math.floor(Math.random()*colors.length)];
+    return new google.maps.Marker({
+        position: new google.maps.LatLng(infos.lat,infos.lng),
         title: infos.name,
-        icon : icon
+        icon : {
+            path: google.maps.SymbolPath.CIRCLE,
+            scale: 5,
+            fillColor : randomColor,
+            fillOpacity : 1,
+            strokeWeight : 10,
+            strokeColor : randomColor,
+            strokeOpacity : 0.2
+        },
+        animation: google.maps.Animation.DROP
     });
-    return marker;
 }
+
 function createInfoWindow(infos){
     var templateVars = {
         name: infos.name,
@@ -46,6 +55,7 @@ function createInfoWindow(infos){
         tweet2: infos.tweets[1],
         tweet3: infos.tweets[2],
     };
+
     var content = panelElement.replace(/name|tweet1|tweet2|tweet3/gi, function(matched){
         return templateVars[matched];
     }).split('{{').join('').split('}}').join('');
