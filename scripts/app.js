@@ -5,6 +5,7 @@ document.getElementById('log-with-twitter').addEventListener('click', twitterOau
 /*
     twitterOauth -> twitterClient -> getDatas -> displayDatas
 */
+
 var client = null, user_infos = {}, followers =[], followings = [];
 
 function twitterOauth(){
@@ -16,7 +17,6 @@ function twitterOauth(){
         const accessToken = result.oauth_access_token;
         const accessTokenSecret = result.oauth_access_token_secret;
         access = [accessToken, accessTokenSecret];
-        //twitter client
         twitterClient(access);
     }).catch(function(error){
         console.error(error, error.stack);
@@ -49,25 +49,13 @@ function twitterClient(access){
 function getDatas(user_id){
     var params = {user_id : user_id, count : 100};
     client.get('followers/list', params , function(error, response) {
-        if (!error) {
-            // console.log(response.users);
-            followers = cleanArrayUsers(response.users);
-        }else{
-            console.log(error);
-        }
+        if (!error)
+        followers = response.users;
     });
     client.get('friends/list', params, function(error, response) {
-        if (!error) {
-            console.log(response.users)
-            followings = cleanArrayUsers(response.users);
-        }else{
-            console.log(error);
-        }
+        if (!error)
+        followings = response.users;
     });
-}
-
-function cleanArrayUsers(users){
-     return null;
 }
 
 function displayHeader(user_infos){
