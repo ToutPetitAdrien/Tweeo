@@ -1,13 +1,23 @@
 /* jshint esversion:6 */
 
+/*
+    Global vars
+*/
+var client = null, user_infos = {}, markers = { followers : [], followings : [] };
+
+/*
+    Event listener for Twitter Oauth
+*/
 document.getElementById('log-with-twitter').addEventListener('click', twitterOauth);
 
 /*
-    twitterOauth -> twitterClient -> getDatas -> displayDatas
+    ** Twitter Oauth function **
+    PARAMS : no params
+    PROCESS :
+    - Call logWithTwitter from main.js
+    - Collect access tokens
+    - Call twitterClient
 */
-
-var client = null, user_infos = {}, markers = { followers : [], followings : [] };
-
 function twitterOauth(){
     var electron = require('electron');
     var logWithTwitter = electron.remote.require('./main').logWithTwitter();
@@ -23,6 +33,15 @@ function twitterOauth(){
     });
 }
 
+/*
+    ** Twitter Client function **
+    PARAMS :
+    - Access tokens (access)
+    PROCESS :
+    - Create client needed for API call
+    - Use twitter package and access tokens collect previously
+    - Finaly collect the current user informations
+*/
 function twitterClient(access){
     var Twitter = require('twitter'),
         at_key = access[0],
@@ -39,38 +58,50 @@ function twitterClient(access){
         if (!error) {
             user_infos = response;
             displayHeader(user_infos);
-            getDatas(user_infos.id);
+            getFollowersFollowings(user_infos.id);
         }else{
             console.log(error);
         }
     });
 }
 
-function getDatas(user_id){
+/*
+    ** Get followers and followings function **
+    PARAMS :
+    - Current user ID (user_id)
+    PROCESS :
+    - Use client previously created to call the api
+    - Call 'followers/list' and 'friends/list' (SEE DOC)
+    - Call createMarkersFromUsers with each response
+*/
+function getFollowersFollowings(user_id){
     var params = {user_id : user_id, count : 100};
     client.get('followers/list', params , function(error, response) {
         if (!error){
-            getMarkersFromUsers(response.users, 'followers', false);
+            createMarkersFromUsers(response.users, 'followers', false);
         }
     });
     client.get('friends/list', params, function(error, response) {
         if (!error){
-            getMarkersFromUsers(response.users, 'followings', true);
+            createMarkersFromUsers(response.users, 'followings', true);
         }
     });
 }
 
-function displayHeader(user_infos){
-    document.querySelector('#log-with-twitter').style.display = 'none';
-    document.querySelector('header').style.display = 'flex';
-    document.querySelector('header img').src = user_infos.profile_image_url;
-    document.querySelector('header .username').innerHTML = "@"+user_infos.screen_name;
-}
-
-function getMarkersFromUsers(users, markerTab, display){
-    for(var i=0 ; i< users.length; i++){
+/*
+    ** Create user marker function **
+    PARAMS :
+    - Tab of user (userTab)
+    - Specific key for marker tab (markerTab) followers or followings
+    - Boolean for display this marker (display). By default start with displaying followings
+    PROCESS :
+    - Iter on each user
+    - Call map.jsaddUserOnMap with callback => add marker the Specific tab of marker
+*/
+function createMarkersFromUsers(userTab, markerTab, display){
+    for(var i=0 ; i< userTab.length; i++){
         var displayOptions = {
-            lunchDisplay : i == users.length -1 && display,
+            lunchDisplay : i == userTab.length -1 && display,
             tabToDisplay : markerTab
         };
 
@@ -80,8 +111,17 @@ function getMarkersFromUsers(users, markerTab, display){
     }
 }
 
-function sleep (time) {
-    return new Promise(function(resolve){
-        setTimeout(resolve, time);
-    });
+/*
+    ** Display header function **
+    PARAMS :
+    - Current user informations
+    PROCESS :
+    - Hide connexion button
+    - Display header with picture and screen name
+*/
+function displayHeader(user_infos){
+    document.querySelector('#log-with-twitter').style.display = 'none';
+    document.querySelector('header').style.display = 'flex';
+    document.querySelector('header img').src = user_infos.profile_image_url;
+    document.querySelector('header .username').innerHTML = "@"+user_infos.screen_name;
 }
