@@ -6,7 +6,7 @@ document.getElementById('log-with-twitter').addEventListener('click', twitterOau
     twitterOauth -> twitterClient -> getDatas -> displayDatas
 */
 
-var client = null, user_infos = {}, followers =[], followings = [];
+var client = null, user_infos = {}, markers = { followers : [], followings : [] };
 
 function twitterOauth(){
     var electron = require('electron');
@@ -49,12 +49,14 @@ function twitterClient(access){
 function getDatas(user_id){
     var params = {user_id : user_id, count : 100};
     client.get('followers/list', params , function(error, response) {
-        if (!error)
-        followers = response.users;
+        if (!error){
+            getMarkersFromUsers(response.users, 'followers', false);
+        }
     });
     client.get('friends/list', params, function(error, response) {
-        if (!error)
-        followings = response.users;
+        if (!error){
+            getMarkersFromUsers(response.users, 'followings', true);
+        }
     });
 }
 
@@ -63,4 +65,23 @@ function displayHeader(user_infos){
     document.querySelector('header').style.display = 'flex';
     document.querySelector('header img').src = user_infos.profile_image_url;
     document.querySelector('header .username').innerHTML = "@"+user_infos.screen_name;
+}
+
+function getMarkersFromUsers(users, markerTab, display){
+    for(var i=0 ; i< users.length; i++){
+        var displayOptions = {
+            lunchDisplay : i == users.length -1 && display,
+            tabToDisplay : markerTab
+        };
+
+        addUserOnMap(users[i], displayOptions, function(marker){
+            markers[markerTab].push(marker);
+        });
+    }
+}
+
+function sleep (time) {
+    return new Promise(function(resolve){
+        setTimeout(resolve, time);
+    });
 }

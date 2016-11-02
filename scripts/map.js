@@ -14,27 +14,60 @@ function initMap() {
     readFile('template/panel.html');
 }
 
-function hideMarker(markerTab){
+function displayMarkers(markers){
+    var bounds = new google.maps.LatLngBounds();
+    for (var i = 0; i < markers.length; i++) {
+        bounds.extend(markers[i].getPosition());
+        markers[i].setMap(map);
+    }
+    map.fitBounds(bounds);
+}
+
+function hideMarkers(markerTab){
     for(var i = 0; i < markerTab.length; i++){
         markerTab[i].setMap(null);
     }
 }
 
-function addElement(infos){
-    var marker = createMarker(infos);
-    var info = createInfoWindow(infos);
-    marker.setMap(map);
-    marker.addListener('click', function() {
-        info.open(map, marker);
-    });
+function addUserOnMap(user, display, callback){
+    if(!user.location)
+    return;
+
+    var request = new XMLHttpRequest();
+    var url = 'https://maps.googleapis.com/maps/api/geocode/json?address=' + user.location + '&key=AIzaSyBFO6THo29ll-W20yu1KmK--gpddIYJxFs';
+    request.open('GET', url, true);
+
+    request.onload = function() {
+        if (request.status >= 200 && request.status < 400) {
+            var geocoding = JSON.parse(request.responseText);
+            if(geocoding.status == "OK"){
+                var lat = geocoding.results[0].geometry.location.lat;
+                var lng = geocoding.results[0].geometry.location.lng;
+                var marker = createMarker(lat, lng);
+                var info = createInfoWindow(user);
+                marker.addListener('click', function() {
+                    info.open(map, marker);
+                });
+                callback(marker);
+                if(display.lunchDisplay)
+                displayMarkers(markers[display.tabToDisplay]);
+
+            }
+
+        }
+    };
+
+    request.onerror = function() {
+        //
+    };
+    request.send();
 }
 
-function createMarker(infos){
+function createMarker(lat, lng){
     var colors = ['#e5118e', '#39dad0', '#f4bb4c', '#7164f0'];
     var randomColor = colors[Math.floor(Math.random()*colors.length)];
     return new google.maps.Marker({
-        position: new google.maps.LatLng(infos.lat,infos.lng),
-        title: infos.name,
+        position: new google.maps.LatLng(lat,lng),
         icon : {
             path: google.maps.SymbolPath.CIRCLE,
             scale: 5,
@@ -48,15 +81,19 @@ function createMarker(infos){
     });
 }
 
-function createInfoWindow(infos){
+function createInfoWindow(user){
     var templateVars = {
-        name: infos.name,
-        tweet1: infos.tweets[0],
-        tweet2: infos.tweets[1],
-        tweet3: infos.tweets[2],
+        coverimage : user.profile_background_image_url,
+        profilePicture : user.profile_image_url,
+        name: user.screen_name,
+        tweetCount : user.statuses_count,
+        followersCount :  user.followers_count,
+        followingsCount : user.friends_count,
+        tweet: user.status.text,
+        url : user.url
     };
-
-    var content = panelElement.replace(/name|tweet1|tweet2|tweet3/gi, function(matched){
+    var regexp = /coverimage|profilePicture|name|tweetCount|followersCount|followingsCount|tweet|url/gi;
+    var content = panelElement.replace(regexp, function(matched){
         return templateVars[matched];
     }).split('{{').join('').split('}}').join('');
 

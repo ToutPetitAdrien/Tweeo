@@ -39,6 +39,8 @@ header{
     justify-content: flex-end;
     align-items: center;
     padding : 20px;
+    z-index: -1;
+    position: relative;
 }
 .username{
     margin-right: 20px;
