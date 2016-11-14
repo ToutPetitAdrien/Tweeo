@@ -20,10 +20,10 @@ document.getElementById('log-with-twitter').addEventListener('click', twitterOau
 */
 function twitterOauth(){
     var electron = require('electron');
-    var logWithTwitter = electron.remote.require('./main').logWithTwitter();
+    var request = electron.remote.require('./main').logWithTwitter();
     var access = null;
 
-    logWithTwitter.then(function(result){
+    request.then(function(result){
         const accessToken = result.oauth_access_token;
         const accessTokenSecret = result.oauth_access_token_secret;
         access = [accessToken, accessTokenSecret];
@@ -44,14 +44,14 @@ function twitterOauth(){
 */
 function twitterClient(access){
     var Twitter = require('twitter'),
-        at_key = access[0],
-        at_secret = access[1];
+        key = access[0],
+        secret = access[1];
 
     client = new Twitter({
         consumer_key: process.env.TWITTER_CONSUMER_KEY,
         consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
-        access_token_key: at_key,
-        access_token_secret: at_secret
+        access_token_key: key,
+        access_token_secret: secret
     });
 
     client.get('account/verify_credentials', {}, function(error, response) {

@@ -23,7 +23,7 @@ function initMap() {
         styles : style,
         disableDefaultUI: true
     });
-    getPanelElement('template/panel.html');
+    getPanelElement();
 }
 
 /*
@@ -95,7 +95,6 @@ function addUserOnMap(user, display, callback){
                 callback(marker);
                 if(display.lunchDisplay)
                 displayMarkers(markers[display.tabToDisplay]);
-
             }
 
         }
@@ -169,10 +168,10 @@ function createInfoWindow(user){
     - Make XMLHttp Request
     - Get content of template/panel.html
 */
-function getPanelElement(file){
+function getPanelElement(){
     var rawFile = new XMLHttpRequest(),
     response = false;
-    rawFile.open("GET", file, true);
+    rawFile.open("GET",'template/panel.html', true);
     rawFile.onreadystatechange = function(){
         if(rawFile.readyState == 4){
             panelElement = rawFile.responseText;
