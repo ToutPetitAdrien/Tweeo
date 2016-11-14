@@ -58,7 +58,7 @@ function twitterClient(access){
         if (!error) {
             user_infos = response;
             displayHeader(user_infos);
-            getFollowersFollowings(user_infos.id);
+            // getFollowersFollowings(user_infos.id);
         }else{
             console.log(error);
         }
@@ -121,7 +121,7 @@ function createMarkersFromUsers(userTab, markerTab, display){
 */
 function displayHeader(user_infos){
     document.querySelector('#log-with-twitter').style.display = 'none';
-    document.querySelector('header').style.display = 'flex';
-    document.querySelector('header img').src = user_infos.profile_image_url;
-    document.querySelector('header .username').innerHTML = "@"+user_infos.screen_name;
+    document.querySelector('.navbar').style.display = 'block';
+    document.querySelector('.navbar #profile-picture').src = user_infos.profile_image_url;
+    document.querySelector('.navbar #username').innerHTML = "@"+user_infos.screen_name;
 }
