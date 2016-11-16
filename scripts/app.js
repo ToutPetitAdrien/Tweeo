@@ -57,8 +57,8 @@ function twitterClient(access){
     client.get('account/verify_credentials', {}, function(error, response) {
         if (!error) {
             user_infos = response;
-            displayHeader(user_infos);
-            // getFollowersFollowings(user_infos.id);
+            updateViewLogin(user_infos);
+            getFollowersFollowings(user_infos.id);
         }else{
             console.log(error);
         }
@@ -100,12 +100,8 @@ function getFollowersFollowings(user_id){
 */
 function createMarkersFromUsers(userTab, markerTab, display){
     for(var i=0 ; i< userTab.length; i++){
-        var displayOptions = {
-            lunchDisplay : i == userTab.length -1 && display,
-            tabToDisplay : markerTab
-        };
 
-        addUserOnMap(users[i], displayOptions, function(marker){
+        addUserOnMap(users[i], display, function(marker){
             markers[markerTab].push(marker);
         });
     }
@@ -116,12 +112,12 @@ function createMarkersFromUsers(userTab, markerTab, display){
     PARAMS :
     - Current user informations
     PROCESS :
-    - Hide connexion button
-    - Display header with picture and screen name
+    - Hide register page
+    - Display navbar with picture and screen name
 */
-function displayHeader(user_infos){
-    document.querySelector('#log-with-twitter').style.display = 'none';
-    document.querySelector('.navbar').style.display = 'block';
+function updateViewLogin(user_infos){
+    document.querySelector('.register').style.display = 'none';
+    document.querySelector('.navbar').style.display = 'flex';
     document.querySelector('.navbar #profile-picture').src = user_infos.profile_image_url;
     document.querySelector('.navbar #username').innerHTML = "@"+user_infos.screen_name;
 }

@@ -87,14 +87,14 @@ function addUserOnMap(user, display, callback){
             if(geocoding.status == "OK"){
                 var lat = geocoding.results[0].geometry.location.lat;
                 var lng = geocoding.results[0].geometry.location.lng;
-                var marker = createMarker(lat, lng);
+                var marker = createMarker(lat, lng, display);
                 var info = createInfoWindow(user);
                 marker.addListener('click', function() {
                     info.open(map, marker);
                 });
                 callback(marker);
-                if(display.lunchDisplay)
-                displayMarkers(markers[display.tabToDisplay]);
+                // if(display.lunchDisplay)
+                // displayMarkers(markers[display.tabToDisplay]);
             }
 
         }
@@ -115,10 +115,10 @@ function addUserOnMap(user, display, callback){
     - Get random color
     - return google.maps.Marker object
 */
-function createMarker(lat, lng){
+function createMarker(lat, lng, display){
     var colors = ['#e5118e', '#39dad0', '#f4bb4c', '#7164f0'];
     var randomColor = colors[Math.floor(Math.random()*colors.length)];
-    return new google.maps.Marker({
+    var marker = new google.maps.Marker({
         position: new google.maps.LatLng(lat,lng),
         icon : {
             path: google.maps.SymbolPath.CIRCLE,
@@ -131,6 +131,8 @@ function createMarker(lat, lng){
         },
         animation: google.maps.Animation.DROP
     });
+    marker.setmap(map);
+    return marker;
 }
 
 /*

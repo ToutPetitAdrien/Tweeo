@@ -1,7 +1,7 @@
 
 /* Style register page */
 
-.bg {
+.register__bg {
     background: url(../src/bg2.jpg) no-repeat center;
     background-size: cover;
     position: absolute;
@@ -18,7 +18,7 @@
     display: none;
 }
 
-.register{
+.register__text{
   display: block;
   position: absolute;
   left: 220px;
@@ -44,10 +44,13 @@ input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
 }
 
 .form_btn {
-  text-decoration: none;
-
-  color: #44484a;
-  font-weight: lighter;
+    text-decoration: none;
+    background-color: transparent;
+    border: none;
+    font-size: inherit;
+    cursor: pointer;
+    color: #44484a;
+    font-weight: lighter;
 }
 
 .presentation_text_visitor-name{
@@ -98,7 +101,7 @@ input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
   }
 }
 
-.form {
+.register__form {
   -webkit-animation-name: fadeInUp;
   animation-name: fadeInUp;
   -webkit-animation-duration: 1s;
