@@ -15,21 +15,6 @@ body{
     height: 100vh;
     z-index: -1;
 }
-
-button{
-    color: #fff;
-    background: #1aa2e1;
-    padding : 10px 20px;
-    border : 0;
-    border-radius: 20px;
-    text-transform: uppercase;
-    cursor: pointer;
-}
-button#log-with-twitter{
-    position: absolute;
-    top : 5px;
-    right : 10px;
-}
 .spacer{
     flex:1;
 }

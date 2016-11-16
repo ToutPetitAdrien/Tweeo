@@ -4,8 +4,10 @@
         <meta charset="UTF-8">
         <title>Tweeo</title>
         <!-- Add links to stylesheets here -->
-        <link rel="stylesheet" href="stylesheets/style.css">
         <link rel="stylesheet" href="stylesheets/basic.css">
+        <link rel="stylesheet" href="stylesheets/navbar.css">
+        <link rel="stylesheet" href="stylesheets/previewprofile.css">
+        <link rel="stylesheet" href="stylesheets/register.css">
     </head>
 
     <body>
@@ -49,16 +51,27 @@
                     <span class="colorful-switch__off"></span>
                 </label>
             </div>
+
             <div class="navbar_pseudo-twitter" id="username">@mumudesbois</div>
             <div class="navbar_pp-twitter">
                 <span class="navbar_pp-twitter_bg"></span>
                 <img id="profile-picture" class="navbar_pp-twitter-inner" src="" alt="picture"/>
             </div>
-
         </div>
 
-
-        <!-- <button id="log-with-twitter">connexion</button> -->
+        <div class="bg">
+        </div>
+        <div class="register">
+            <div class ="form">
+                <span class="salut">Salut</span>
+                <input type="text" class="form_visitor-name" placeholder="Quel est ton prénom ?" />
+                <a class="form_btn" href="#">OK</a>
+            </div>
+            <div class ="presentation">
+                <p class="presentation_text">Salut <span class="presentation_text_visitor-name"></span>, <br> connecte-toi avec ton compte Twitter pour découvrir <br> où tes followers et tes followings <br>se trouvent dans le monde.</p>
+                <button id="log-with-twitter">Connexion</button>
+            </div>
+        </div>
 
         <div id="map-container"></div>
     </body>
@@ -76,6 +89,8 @@
     <script type="text/javascript" src="scripts/app.js"></script>
     <!-- switch animation -->
     <script type="text/javascript" src="scripts/switch.js"></script>
+    <!-- register page -->
+    <script type="text/javascript" src="scripts/register.js"></script>
 
     <script>if (window.module) module = window.module;</script>
 </html>
