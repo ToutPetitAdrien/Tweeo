@@ -78,12 +78,12 @@ function getFollowersFollowings(user_id){
     var params = {user_id : user_id, count : 100};
     client.get('followers/list', params , function(error, response) {
         if (!error){
-            createMarkersFromUsers(response.users, 'followers', false);
+            createMarkersFromUsers(response.users, 'followers', true);
         }
     });
     client.get('friends/list', params, function(error, response) {
         if (!error){
-            createMarkersFromUsers(response.users, 'followings', true);
+            createMarkersFromUsers(response.users, 'followings', false);
         }
     });
 }
@@ -100,8 +100,7 @@ function getFollowersFollowings(user_id){
 */
 function createMarkersFromUsers(userTab, markerTab, display){
     for(var i=0 ; i< userTab.length; i++){
-
-        addUserOnMap(users[i], display, function(marker){
+        addUserOnMap(userTab[i], display, function(marker){
             markers[markerTab].push(marker);
         });
     }

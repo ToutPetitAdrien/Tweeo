@@ -4,6 +4,7 @@
     Global vars
 */
 var map,
+    bounds,
     style = [{"featureType":"all","elementType":"all","stylers":[{"visibility":"off"}]},{"featureType":"landscape","elementType":"all","stylers":[{"visibility":"on"},{"color":"#ffffff"}]},{"featureType":"road.highway","elementType":"all","stylers":[{"color":"#dfdbdb"},{"visibility":"simplified"}]},{"featureType":"road.highway","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"road.arterial","elementType":"all","stylers":[{"visibility":"simplified"},{"color":"#eff0f2"}]},{"featureType":"road.arterial","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"road.local","elementType":"all","stylers":[{"color":"#eff0f2"},{"visibility":"on"}]},{"featureType":"road.local","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"water","elementType":"all","stylers":[{"color":"#eff0f2"},{"visibility":"on"}]}],
     panelElement = null;
 
@@ -23,6 +24,7 @@ function initMap() {
         styles : style,
         disableDefaultUI: true
     });
+    bounds = new google.maps.LatLngBounds();
     getPanelElement();
 }
 
@@ -37,7 +39,6 @@ function initMap() {
     - Finaly fit the map to markers
 */
 function displayMarkers(markerTab){
-    var bounds = new google.maps.LatLngBounds();
     for (var i = 0; i < markerTab.length; i++) {
         bounds.extend(markerTab[i].getPosition());
         markerTab[i].setMap(map);
@@ -131,7 +132,11 @@ function createMarker(lat, lng, display){
         },
         animation: google.maps.Animation.DROP
     });
-    marker.setmap(map);
+    if(display){
+        marker.setMap(map);
+        bounds.extend(marker.getPosition());
+        map.fitBounds(bounds);
+    }
     return marker;
 }
 
