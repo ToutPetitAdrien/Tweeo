@@ -5,6 +5,7 @@
 */
 var map,
     bounds,
+    ibs = [],
     style = [{"featureType":"all","elementType":"all","stylers":[{"visibility":"off"}]},{"featureType":"landscape","elementType":"all","stylers":[{"visibility":"on"},{"color":"#ffffff"}]},{"featureType":"road.highway","elementType":"all","stylers":[{"color":"#dfdbdb"},{"visibility":"simplified"}]},{"featureType":"road.highway","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"road.arterial","elementType":"all","stylers":[{"visibility":"simplified"},{"color":"#eff0f2"}]},{"featureType":"road.arterial","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"road.local","elementType":"all","stylers":[{"color":"#eff0f2"},{"visibility":"on"}]},{"featureType":"road.local","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"water","elementType":"all","stylers":[{"color":"#eff0f2"},{"visibility":"on"}]}],
     panelElement = null;
 
@@ -89,13 +90,14 @@ function addUserOnMap(user, display, callback){
                 var lat = geocoding.results[0].geometry.location.lat;
                 var lng = geocoding.results[0].geometry.location.lng;
                 var marker = createMarker(lat, lng, display);
-                var info = createInfoWindow(user);
+                var infob = createInfoWindow(user);
                 marker.addListener('click', function() {
-                    info.open(map, marker);
+                    ibs.forEach(function(iw){
+                        iw.close();
+                    });
+                    infob.open(map, marker);
                 });
                 callback(marker);
-                // if(display.lunchDisplay)
-                // displayMarkers(markers[display.tabToDisplay]);
             }
 
         }
@@ -139,7 +141,6 @@ function createMarker(lat, lng, display){
     }
     return marker;
 }
-
 /*
     ** Create InfoWindow function **
     PARAMS :
@@ -152,19 +153,35 @@ function createInfoWindow(user){
     var templateVars = {
         coverimage : user.profile_background_image_url,
         profilePicture : user.profile_image_url,
-        name: user.screen_name,
+        username: user.screen_name,
         tweetCount : user.statuses_count,
         followersCount :  user.followers_count,
         followingsCount : user.friends_count,
-        tweet: user.status.text,
-        url : user.url
+        tweet_text: user.status.text,
+        linkTo : user.url
     };
-    var regexp = /coverimage|profilePicture|name|tweetCount|followersCount|followingsCount|tweet|url/gi;
+    var regexp = /coverimage|profilePicture|username|tweetCount|followersCount|followingsCount|tweet_text|linkTo/gi;
     var content = panelElement.replace(regexp, function(matched){
         return templateVars[matched];
     }).split('{{').join('').split('}}').join('');
 
-    return new google.maps.InfoWindow({content: content});
+    var ib = new InfoBubble({
+        content: content,
+        padding : 0,
+        shadowStyle : 0,
+        borderWidth : 0,
+        maxHeight: null,
+        maxWidth : null,
+        borderRadius: 0,
+        arrowSize: 0,
+        hideCloseButton: true,
+    });
+    ibs.push(ib);
+    google.maps.event.addListener(map, 'click', function(e) {
+        ib.close();
+    });
+
+    return ib;
 }
 
 /*

@@ -1,63 +1,50 @@
 /* Style previewprofile */
 
-#profile{
-  position: relative;
+.profile{
   font-family: 'Open Sans', sans-serif;
   color: white;
   width:300px;
-  background:linear-gradient(to right, #48A2DA, #3FBAC5);
   font-size: 12px;
 }
-
-#profile_cover_picture{
-  width: 100%;
+.followers .profile{
+    background:linear-gradient(to right, #48A2DA, #3FBAC5);
+}
+.followings .profile{
+    background:linear-gradient(to right, #ffAdfA, #BAC5e4);
+}
+.profile__cover-picture{
+  height: 80px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
 }
 
-#profile_main{
+.profile__content{
   padding:20px 40px 20px 40px;
 }
 
-#profile_main_pseudo{
+.profile__pseudo{
   font-weight: bold;
   font-size: 20px;
 }
-
-ul {
-  display: table;
-  list-style-type: none;
-  padding:0;
-  width:100%;
-}
-
-#profil_main_stat_nb-tweets, #profil_main_stat_nb-followings, #profil_main_stat_nb-followers  {
+.profile__info{
   display: table-cell;
 }
-
-#profil_main_stat_nb-tweets_value, #profil_main_stat_nb-followings_value, #profil_main_stat_nb-followers_value  {
-  font-size: 16px;
+.profile__info__value{
+    font-size: 16px;
 }
-
-#profil_main_stat_nb-tweets_label, #profil_main_stat_nb-followings_label, #profil_main_stat_nb-followers_label  {
+.profile__info__label{
   display:block;
   padding-top: 3px;
 }
 
-#profil_main_story {
+.profile__tweets{
   font-style: italic;
   margin-top: 30px;
   margin-bottom: 0px;
 }
 
-
-#profil_main_story_tweet_info_icon {
-    width: 20px;
-    margin: auto;
-    display: block;
-    padding-top: 7px;
-}
-
-#profil_main_story_tweet_text {
-    text-align: justify;
+.profile__tweet__text {
     padding-right: 40px;
     width: 154px;
     word-break: break-word;
@@ -66,17 +53,21 @@ ul {
     vertical-align: top;
 }
 
-#profil_main_story_tweet_info {
+.profile__tweet__info {
     font-size: 10px;
     display: table-cell;
     vertical-align: top;
 }
-
-#profil_main_story_tweet_info_time {
+.profile__tweet__info span{
     white-space: nowrap;
 }
-
-#profil_main_see-more {
+.profile__tweet__info img{
+    width: 20px;
+    margin: auto;
+    display: block;
+    padding-top: 7px;
+}
+.profile__see-more{
     width: 20px;
     display: block;
     margin: auto;
