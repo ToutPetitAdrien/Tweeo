@@ -1,0 +1,74 @@
+/* Style previewprofile */
+
+.profile{
+  font-family: 'Open Sans', sans-serif;
+  color: white;
+  width:300px;
+  font-size: 12px;
+}
+.followers .profile{
+    background:linear-gradient(to right, #48A2DA, #3FBAC5);
+}
+.followings .profile{
+    background:linear-gradient(to right, #D42417, #EB5D1D);
+}
+.profile__cover-picture{
+  height: 80px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+
+.profile__content{
+  padding:20px 40px 20px 40px;
+}
+
+.profile__pseudo{
+  font-weight: bold;
+  font-size: 20px;
+}
+.profile__info{
+  display: table-cell;
+}
+.profile__info__value{
+    font-size: 16px;
+}
+.profile__info__label{
+  display:block;
+  padding-top: 3px;
+}
+
+.profile__tweets{
+  font-style: italic;
+  margin-top: 30px;
+  margin-bottom: 0px;
+}
+
+.profile__tweet__text {
+    padding-right: 40px;
+    width: 154px;
+    word-break: break-word;
+    padding-bottom: 20px;
+    display: table-cell;
+    vertical-align: top;
+}
+
+.profile__tweet__info {
+    font-size: 10px;
+    display: table-cell;
+    vertical-align: top;
+}
+.profile__tweet__info span{
+    white-space: nowrap;
+}
+.profile__tweet__info img{
+    width: 20px;
+    margin: auto;
+    display: block;
+    padding-top: 7px;
+}
+.profile__see-more{
+    width: 20px;
+    display: block;
+    margin: auto;
+}

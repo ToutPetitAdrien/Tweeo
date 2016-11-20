@@ -1,0 +1,32 @@
+<div class="profile">
+    <div class="profile__cover-picture" style="background-image : url({{coverimage}})"></div>
+    <div class="profile__content">
+        <div  class="profile__pseudo">@{{username}}</div>
+        <ul class="profile__infos">
+            <li class="profile__info">
+                <span class="profile__info__value">{{tweetCount}}</span>
+                <span class="profile__info__label">Tweets</span>
+            </li>
+            <li class="profile__info">
+                <span class="profile__info__value">{{followingsCount}}</span>
+                <span class="profile__info__label">Abonnements</span>
+            </li>
+            <li class="profile__info">
+                <span class="profile__info__value">{{followersCount}}</span>
+                <span class="profile__info__label">Abonnés</span>
+            </li>
+        </ul>
+        <ul class="profile__tweets">
+            <li class="profile__tweet">
+                <span class="profile__tweet__text">{{tweet_text}}</span>
+                <div class="profile__tweet__info">
+                    <span>3 min</span>
+                    <img src="src/tweet.png" />
+                </div>
+            </li>
+        </ul>
+        <a href="{{linkTo}}">
+            <img class="profile__see-more" src="src/more.png"/>
+        </a>
+    </div>
+</div>

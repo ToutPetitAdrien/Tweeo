@@ -1,0 +1,39 @@
+body{
+    margin :0;
+    font-family: 'Open sans';
+}
+
+*:focus{
+    outline : 0;
+}
+
+ul{
+  display: table;
+  list-style-type: none;
+  padding:0;
+  width:100%;
+}
+
+#map-container{
+    position: absolute;
+    top : 0;
+    left : 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+}
+.spacer{
+    flex:1;
+}
+/*
+    GOOGLE MAPS
+*/
+a[href^="http://maps.google.com/maps"]{display:none !important}
+a[href^="https://maps.google.com/maps"]{display:none !important}
+
+.gmnoprint a, .gmnoprint span, .gm-style-cc {
+    display:none;
+}
+.gmnoprint div {
+    background:none !important;
+}
