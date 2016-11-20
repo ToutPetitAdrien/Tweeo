@@ -5,9 +5,10 @@
 */
 var map,
     bounds,
-    ibs = [],
-    style = [{"featureType":"all","elementType":"all","stylers":[{"visibility":"off"}]},{"featureType":"landscape","elementType":"all","stylers":[{"visibility":"on"},{"color":"#ffffff"}]},{"featureType":"road.highway","elementType":"all","stylers":[{"color":"#dfdbdb"},{"visibility":"simplified"}]},{"featureType":"road.highway","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"road.arterial","elementType":"all","stylers":[{"visibility":"simplified"},{"color":"#eff0f2"}]},{"featureType":"road.arterial","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"road.local","elementType":"all","stylers":[{"color":"#eff0f2"},{"visibility":"on"}]},{"featureType":"road.local","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"water","elementType":"all","stylers":[{"color":"#eff0f2"},{"visibility":"on"}]}],
-    panelElement = null;
+    spiderfy,
+    panelElement,
+    ib,
+    style = [{"featureType":"all","elementType":"all","stylers":[{"visibility":"off"}]},{"featureType":"landscape","elementType":"all","stylers":[{"visibility":"on"},{"color":"#ffffff"}]},{"featureType":"road.highway","elementType":"all","stylers":[{"color":"#dfdbdb"},{"visibility":"simplified"}]},{"featureType":"road.highway","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"road.arterial","elementType":"all","stylers":[{"visibility":"simplified"},{"color":"#eff0f2"}]},{"featureType":"road.arterial","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"road.local","elementType":"all","stylers":[{"color":"#eff0f2"},{"visibility":"on"}]},{"featureType":"road.local","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"water","elementType":"all","stylers":[{"color":"#eff0f2"},{"visibility":"on"}]}];
 
 
 /*
@@ -15,7 +16,9 @@ var map,
     PARAMS : no params
     PROCESS :
     - Callback of Google Maps loading
-    - Create new google.maps.Map obejct
+    - Create new google.maps.Map object
+    - Create new LatLngBounds object
+    - Create nex Spiderfy
     - Call getPanelElement function
 */
 function initMap() {
@@ -26,7 +29,36 @@ function initMap() {
         disableDefaultUI: true
     });
     bounds = new google.maps.LatLngBounds();
+    createSpiderfy();
     getPanelElement();
+}
+initMap();
+/*
+    ** Create InfoWindow function **
+    PARAMS :
+    - User informations object (user)
+    PROCESS :
+    - Return InfoBubble object with panel template
+*/
+function createSpiderfy(user){
+    spiderfy = new OverlappingMarkerSpiderfier(map, {legWeight : 0.5});
+    ib = new InfoBubble({
+        padding : 0,
+        shadowStyle : 0,
+        borderWidth : 0,
+        maxHeight: null,
+        maxWidth : null,
+        borderRadius: 0,
+        arrowSize: 0,
+        hideCloseButton: true,
+    });
+    spiderfy.addListener('click', function(marker, event) {
+      ib.setContent(marker.desc);
+      ib.open(map, marker);
+    });
+    google.maps.event.addListener(map, 'click', function(e) {
+        ib.close();
+    });
 }
 
 /*
@@ -89,14 +121,15 @@ function addUserOnMap(user, display, callback){
             if(geocoding.status == "OK"){
                 var lat = geocoding.results[0].geometry.location.lat;
                 var lng = geocoding.results[0].geometry.location.lng;
-                var marker = createMarker(lat, lng, display);
-                var infob = createInfoWindow(user);
-                marker.addListener('click', function() {
-                    ibs.forEach(function(iw){
-                        iw.close();
-                    });
-                    infob.open(map, marker);
-                });
+                var marker = createMarker(lat, lng, user, display);
+                spiderfy.addMarker(marker);
+                // var infob = createInfoWindow(user);
+                // marker.addListener('click', function() {
+                //     ibs.forEach(function(ib){
+                //         ib.close();
+                //     });
+                //     infob.open(map, marker);
+                // });
                 callback(marker);
             }
 
@@ -118,7 +151,7 @@ function addUserOnMap(user, display, callback){
     - Get random color
     - return google.maps.Marker object
 */
-function createMarker(lat, lng, display){
+function createMarker(lat, lng, user, display){
     var colors = ['#e5118e', '#39dad0', '#f4bb4c', '#7164f0'];
     var randomColor = colors[Math.floor(Math.random()*colors.length)];
     var marker = new google.maps.Marker({
@@ -134,6 +167,8 @@ function createMarker(lat, lng, display){
         },
         animation: google.maps.Animation.DROP
     });
+    marker.desc = getMarkerDescription(user);
+
     if(display){
         marker.setMap(map);
         bounds.extend(marker.getPosition());
@@ -141,15 +176,16 @@ function createMarker(lat, lng, display){
     }
     return marker;
 }
+
 /*
-    ** Create InfoWindow function **
+    ** Get marker description function **
     PARAMS :
     - User informations object (user)
     PROCESS :
     - Replace template vars by correct informations in panelElement
-    - Return google.maps.InfoWindow object with panel template
+    - Return the string
 */
-function createInfoWindow(user){
+function getMarkerDescription(user){
     var templateVars = {
         coverimage : user.profile_background_image_url,
         profilePicture : user.profile_image_url,
@@ -165,23 +201,7 @@ function createInfoWindow(user){
         return templateVars[matched];
     }).split('{{').join('').split('}}').join('');
 
-    var ib = new InfoBubble({
-        content: content,
-        padding : 0,
-        shadowStyle : 0,
-        borderWidth : 0,
-        maxHeight: null,
-        maxWidth : null,
-        borderRadius: 0,
-        arrowSize: 0,
-        hideCloseButton: true,
-    });
-    ibs.push(ib);
-    google.maps.event.addListener(map, 'click', function(e) {
-        ib.close();
-    });
-
-    return ib;
+    return content;
 }
 
 /*

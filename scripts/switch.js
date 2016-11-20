@@ -14,14 +14,11 @@ function translate(elements, isChecked) {
 }
 
 function switch_marker(evt){
-    ibs.forEach(function(el){
-        el.close();
-    });
-
+    ib.close();
     var isChecked = evt.target.checked;
     var elements = document.querySelectorAll('.gradient-swtich');
     translate(elements, isChecked);
-    
+
     if(isChecked){
         document.querySelector('body').className = 'followings';
         displayMarkers(markers.followings);
